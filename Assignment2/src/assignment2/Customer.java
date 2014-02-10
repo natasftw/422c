@@ -4,7 +4,6 @@ package assignment2;
 
 public class Customer {
 // instance variables
-	private static final int MAX_ACCOUNTS = 4;
 	
 // A unique number that identifies the customer
 	private int customerNumber;
@@ -15,9 +14,11 @@ public class Customer {
 // the customer's address
     private String address;
    
-// an array holding all of the customer's bank accounts
-// Indexes are: 0 - checking, 1 - general savings, 2 - car savings, 3 - student savings
-    private BankAccount[] accountsHeld = new BankAccount[MAX_ACCOUNTS];
+// all of the customer's various bank accounts
+    private CheckingAccount checking;
+    private SavingsAccount savings;
+    private SavingsAccount autoLoan;
+    private SavingsAccount studentLoan;
     
     
 // constructors
@@ -26,10 +27,10 @@ public class Customer {
     	customerNumber = -1;
     	name = "Not found";
     	address = "Not Found";
-    	accountsHeld[0] = null;
-    	accountsHeld[1] = null;
-    	accountsHeld[2] = null;
-    	accountsHeld[3] = null;
+    	checking = null;
+    	savings = null;
+    	autoLoan = null;
+    	studentLoan = null;
     }
     
     public Customer(int custNumber, String initName, String initAddress)
@@ -37,10 +38,10 @@ public class Customer {
     	customerNumber = custNumber;
     	name = initName;
     	address = initAddress;
-    	accountsHeld[0] = null;
-    	accountsHeld[1] = null;
-    	accountsHeld[2] = null;
-    	accountsHeld[3] = null;
+    	checking = null;
+    	savings = null;
+    	autoLoan = null;
+    	studentLoan = null;
     }
     
 // getter methods
@@ -59,20 +60,24 @@ public class Customer {
     	return address;
     }
     
-    public BankAccount getAccount(char type)
+    public CheckingAccount getChecking()
     {
-    	if(type == 'C' || type == 'c')
-    	{
-    		return accountsHeld[0];
-    	} else if(type == 'S' || type == 's') {
-    		return accountsHeld[1];
-    	} else if(type == 'A' || type == 'a') {
-    		return accountsHeld[2];
-    	} else if(type == 'L' || type == 'l') {
-    		return accountsHeld[3];
-    	} else {
-    		return null;
-    	}
+    	return checking;
+    }
+    
+    public SavingsAccount getSavings()
+    {
+    	return savings;
+    }
+    
+    public SavingsAccount getAutoLoan()
+    {
+    	return autoLoan;
+    }
+    
+    public SavingsAccount getStudentLoan()
+    {
+    	return studentLoan;
     }
     
 // setter methods
@@ -91,19 +96,23 @@ public class Customer {
     	address = newAddress;
     }
     
-    public void setAccount(char type, BankAccount newAccount)
+    public void setChecking(CheckingAccount newAccount)
     {
-    	if(type == 'C' || type == 'c')
-    	{
-    		accountsHeld[0] = newAccount;
-    	} else if(type == 'S' || type == 's') {
-    		accountsHeld[1] = newAccount;
-    	} else if(type == 'A' || type == 'a') {
-    		accountsHeld[2] = newAccount;
-    	} else if(type == 'L' || type == 'l') {
-    		accountsHeld[3] = newAccount;
-    	} else {
-    		System.out.println("That account type doesn't exist. Please try again");
-    	}
+    	checking = newAccount;
+    }
+    
+    public void setSavings(SavingsAccount newAccount)
+    {
+    	savings = newAccount;
+    }
+    
+    public void setAutoLoan(SavingsAccount newAccount)
+    {
+    	autoLoan = newAccount;
+    }
+    
+    public void setStudentLoan(SavingsAccount newAccount)
+    {
+    	studentLoan = newAccount;
     }
 }
