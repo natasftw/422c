@@ -1,0 +1,419 @@
+if (input.length() > 0)
+			{
+				inputAccount = inputLower.charAt(index);
+				inputAccountNum = Character.getNumericValue(inputAccount);
+				index++;
+			
+				if (inputAccountNum > 0 && inputAccountNum <= (numCusts+1)) //need to parse input and verify the input is valid
+				{ 
+					if (numCusts == 0)
+					{
+						customers[numCusts] = new Customer(inputAccountNum);
+						numCusts++;
+					} else { //Poll customer for account number
+						while (customers[cusIndex].getCustomerNumber() != inputAccount && cusIndex < customers.length)
+						{
+							cusIndex++;
+						}
+						if (cusIndex == customers.length)
+						{
+							cusIndex = 0;
+							customers[numCusts] = new Customer(inputAccountNum);
+						}
+					}
+					while(index < inputLower.length() && inputLower.charAt(index) != ' ')
+					{
+						index++;
+					}
+					index++;
+					if (index < inputLower.length())
+					{
+						if (inputLower.charAt(index) >= 'a' && inputLower.charAt(index) <= 'z')
+						{
+							inputTrans = inputLower.charAt(index);
+							index++;
+							if (index < inputLower.length())
+							{
+								index++;
+								if (inputTrans == 'd')
+								{
+									while (index < inputLower.length() && inputLower.charAt(index) != ' ' && inputLower.charAt(index) >= 48 && inputLower.charAt(index) <= 57 || inputLower.charAt(index) == '.')
+									{	
+										inputAmount += inputLower.charAt(index);
+										index++;
+									}
+									inputAmountNum = Double.parseDouble(inputAmount);
+									index++;
+									if (index < inputLower.length())
+									{
+										transType = inputLower.charAt(index);	
+										if (transType == 'c')
+										{
+											if (customers[inputAccountNum-1].getChecking() == null)
+											{
+												CheckingAccount newAccount = new CheckingAccount();
+												customers[inputAccountNum-1].setChecking(newAccount);
+											}
+											customers[inputAccountNum-1].getChecking().deposit(inputAmountNum);		
+										} else if (transType == 's') {
+											if (customers[inputAccountNum-1].getSavings() == null)
+											{
+												SavingsAccount newAccount = new SavingsAccount();
+												customers[inputAccountNum-1].setSavings(newAccount);
+											}
+											customers[inputAccountNum-1].getSavings().deposit(inputAmountNum);	
+										} else if (transType == 'l') {
+											if (customers[inputAccountNum-1].getStudentLoan() == null)
+											{
+												SavingsAccount newAccount = new SavingsAccount();
+												customers[inputAccountNum-1].setStudentLoan(newAccount);
+											}
+											customers[inputAccountNum-1].getStudentLoan().deposit(inputAmountNum);												
+										} else if (transType == 'a') {						
+											if (customers[inputAccountNum-1].getAutoLoan() == null)
+											{
+												SavingsAccount newAccount = new SavingsAccount();
+												customers[inputAccountNum-1].setAutoLoan(newAccount);
+											}
+											customers[inputAccountNum-1].getAutoLoan().deposit(inputAmountNum);							
+										} else {
+											System.out.println("Invalid account code, please try again.");
+										}										
+									}
+								
+								} else if (inputTrans == 'w') {
+									while (index < inputLower.length() && inputLower.charAt(index) != ' ' && inputLower.charAt(index) >= 48 && inputLower.charAt(index) <= 57 || inputLower.charAt(index) == '.')
+									{	
+										inputAmount += inputLower.charAt(index);
+										index++;
+									}
+									inputAmountNum = Double.parseDouble(inputAmount);
+									index++;
+										
+									if (index < inputLower.length())
+									{
+										transType = inputLower.charAt(index);									
+										if (transType == 'c')
+										{
+											if (customers[inputAccountNum-1].getChecking() == null)
+											{
+												CheckingAccount newAccount = new CheckingAccount();
+												customers[inputAccountNum-1].setChecking(newAccount);
+											}
+											customers[inputAccountNum-1].getChecking().withdraw(inputAmountNum);		
+										} else if (transType == 's') {
+											if (customers[inputAccountNum-1].getSavings() == null)
+											{
+												SavingsAccount newAccount = new SavingsAccount();
+												customers[inputAccountNum-1].setSavings(newAccount);
+											}
+											customers[inputAccountNum-1].getSavings().withdraw(inputAmountNum);	
+										} else if (transType == 'l') {
+											if (customers[inputAccountNum-1].getStudentLoan() == null)
+											{
+												SavingsAccount newAccount = new SavingsAccount();
+												customers[inputAccountNum-1].setStudentLoan(newAccount);
+											}
+											customers[inputAccountNum-1].getStudentLoan().withdraw(inputAmountNum);												
+										} else if (transType == 'a') {						
+											if (customers[inputAccountNum-1].getAutoLoan() == null)
+											{
+												SavingsAccount newAccount = new SavingsAccount();
+												customers[inputAccountNum-1].setAutoLoan(newAccount);
+											}
+											customers[inputAccountNum-1].getAutoLoan().withdraw(inputAmountNum);							
+										} else {
+											System.out.println("Invalid account code, please try again.");
+										}
+									}
+								} else if (inputTrans == 'i')								
+									{
+										transType = inputLower.charAt(index);																						
+										if (transType == 's') {
+											if (customers[inputAccountNum-1].getSavings() == null)
+											{
+												SavingsAccount newAccount = new SavingsAccount();
+												customers[inputAccountNum-1].setSavings(newAccount);
+											}
+											customers[inputAccountNum-1].getSavings().ProcessInterest();	
+										} else if (transType == 'l') {
+											if (customers[inputAccountNum-1].getStudentLoan() == null)
+											{
+												SavingsAccount newAccount = new SavingsAccount();
+												customers[inputAccountNum-1].setStudentLoan(newAccount);
+											}
+											customers[inputAccountNum-1].getStudentLoan().ProcessInterest();												
+										} else if (transType == 'a') {						
+											if (customers[inputAccountNum-1].getAutoLoan() == null)
+											{
+												SavingsAccount newAccount = new SavingsAccount();
+												customers[inputAccountNum-1].setAutoLoan(newAccount);
+											}
+											customers[inputAccountNum-1].getAutoLoan().ProcessInterest();							
+										} else {
+											System.out.println("Invalid account code, please try again.");
+									}							
+								} else if (inputTrans == 't')
+									{
+										while (index < inputLower.length() && inputLower.charAt(index) != ' ' && inputLower.charAt(index) >= 48 && inputLower.charAt(index) <= 57 || inputLower.charAt(index) == '.')
+										{	
+											inputAmount += inputLower.charAt(index);
+											index++;
+										}
+										inputAmountNum = Double.parseDouble(inputAmount);
+										index++;
+										if (index < inputLower.length())
+										{
+											transType = inputLower.charAt(index);	
+											if (transType == 'c')
+											{
+												if (customers[inputAccountNum-1].getChecking() == null)
+												{
+													CheckingAccount newAccount = new CheckingAccount();
+													customers[inputAccountNum-1].setChecking(newAccount);
+												}
+												index++;
+												if (index < inputLower.length() && inputLower.charAt(index) == ' ')
+												{
+													index++;
+													if (index < inputLower.length() && inputLower.charAt(index) == 'c')
+													{
+														customers[inputAccountNum-1].getChecking().deposit(0);	
+													} else if (index < inputLower.length() && inputLower.charAt(index) == 's') {
+														if (customers[inputAccountNum-1].getSavings() == null)
+														{
+															SavingsAccount newAccount = new SavingsAccount();
+															customers[inputAccountNum-1].setSavings(newAccount);
+														}
+														if (customers[inputAccountNum-1].getChecking().withdraw(inputAmountNum))
+														{
+															customers[inputAccountNum-1].getSavings().deposit(inputAmountNum);
+														}
+													} else if (index < inputLower.length() && inputLower.charAt(index) == 'l') {
+														if (customers[inputAccountNum-1].getStudentLoan() == null)
+														{
+															SavingsAccount newAccount = new SavingsAccount();
+															customers[inputAccountNum-1].setStudentLoan(newAccount);
+														}
+														if (customers[inputAccountNum-1].getChecking().withdraw(inputAmountNum))
+														{
+															customers[inputAccountNum-1].getStudentLoan().deposit(inputAmountNum);
+														}	
+													} else if (index < inputLower.length() && inputLower.charAt(index) == 'a') {
+														if (customers[inputAccountNum-1].getAutoLoan() == null)
+														{
+															SavingsAccount newAccount = new SavingsAccount();
+															customers[inputAccountNum-1].setAutoLoan(newAccount);
+														}
+														if (customers[inputAccountNum-1].getChecking().withdraw(inputAmountNum))
+														{
+															customers[inputAccountNum-1].getAutoLoan().deposit(inputAmountNum);
+														}	
+													} else {
+														System.out.println("Invalid transfer request, please try again.");
+													}
+												} else {
+													System.out.println("Invalid transfer request, please try again.");
+												}
+											} else if (transType == 's') {
+												if (customers[inputAccountNum-1].getSavings() == null)
+												{
+													SavingsAccount newAccount = new SavingsAccount();
+													customers[inputAccountNum-1].setSavings(newAccount);
+												}
+												index++;
+												if (index < inputLower.length() && inputLower.charAt(index) == ' ')
+												{
+													index++;
+													if (index < inputLower.length() && inputLower.charAt(index) == 'c')
+													{
+														if (customers[inputAccountNum-1].getChecking() == null)
+														{
+															CheckingAccount newAccount = new CheckingAccount();
+															customers[inputAccountNum-1].setChecking(newAccount);
+														}
+														if (customers[inputAccountNum-1].getSavings().withdraw(inputAmountNum))
+														{
+															customers[inputAccountNum-1].getChecking().deposit(inputAmountNum);
+														}	
+													} else if (index < inputLower.length() && inputLower.charAt(index) == 's') {
+															customers[inputAccountNum-1].getSavings().deposit(0);
+													} else if (index < inputLower.length() && inputLower.charAt(index) == 'l') {
+														if (customers[inputAccountNum-1].getStudentLoan() == null)
+														{
+															SavingsAccount newAccount = new SavingsAccount();
+															customers[inputAccountNum-1].setStudentLoan(newAccount);
+														}
+														if (customers[inputAccountNum-1].getSavings().withdraw(inputAmountNum))
+														{
+															customers[inputAccountNum-1].getStudentLoan().deposit(inputAmountNum);
+														}	
+													} else if (index < inputLower.length() && inputLower.charAt(index) == 'a') {
+														if (customers[inputAccountNum-1].getAutoLoan() == null)
+														{
+															SavingsAccount newAccount = new SavingsAccount();
+															customers[inputAccountNum-1].setAutoLoan(newAccount);
+														}
+														if (customers[inputAccountNum-1].getSavings().withdraw(inputAmountNum))
+														{
+															customers[inputAccountNum-1].getAutoLoan().deposit(inputAmountNum);
+														}	
+													} else {
+														System.out.println("Invalid transfer request, please try again.");
+													}
+												} else {
+													System.out.println("Invalid transfer request, please try again.");
+												}
+											} else if (transType == 'l') {
+												if (customers[inputAccountNum-1].getStudentLoan() == null)
+												{
+													SavingsAccount newAccount = new SavingsAccount();
+													customers[inputAccountNum-1].setStudentLoan(newAccount);
+												}
+												index++;
+												if (index < inputLower.length() && inputLower.charAt(index) == ' ')
+												{
+													index++;
+													if (index < inputLower.length() && inputLower.charAt(index) == 'c')
+													{
+														if (customers[inputAccountNum-1].getChecking() == null)
+														{
+															CheckingAccount newAccount = new CheckingAccount();
+															customers[inputAccountNum-1].setChecking(newAccount);
+														}
+														if (customers[inputAccountNum-1].getStudentLoan().withdraw(inputAmountNum))
+														{
+															customers[inputAccountNum-1].getChecking().deposit(inputAmountNum);
+														}	
+													} else if (index < inputLower.length() && inputLower.charAt(index) == 's') {
+														if (customers[inputAccountNum-1].getSavings() == null)
+														{
+															SavingsAccount newAccount = new SavingsAccount();
+															customers[inputAccountNum-1].setSavings(newAccount);
+														}
+														if (customers[inputAccountNum-1].getStudentLoan().withdraw(inputAmountNum))
+														{
+															customers[inputAccountNum-1].getSavings().deposit(inputAmountNum);
+														}
+													} else if (index < inputLower.length() && inputLower.charAt(index) == 'l') {
+														customers[inputAccountNum-1].getStudentLoan().deposit(0);
+													} else if (index < inputLower.length() && inputLower.charAt(index) == 'a') {
+														if (customers[inputAccountNum-1].getAutoLoan() == null)
+														{
+															SavingsAccount newAccount = new SavingsAccount();
+															customers[inputAccountNum-1].setAutoLoan(newAccount);
+														}
+														if (customers[inputAccountNum-1].getStudentLoan().withdraw(inputAmountNum))
+														{
+															customers[inputAccountNum-1].getAutoLoan().deposit(inputAmountNum);
+														}	
+													} else {
+														System.out.println("Invalid transfer request, please try again.");
+													}
+												} else {
+													System.out.println("Invalid transfer request, please try again.");
+												}											
+											} else if (transType == 'a') {						
+												if (customers[inputAccountNum-1].getAutoLoan() == null)
+												{
+													SavingsAccount newAccount = new SavingsAccount();
+													customers[inputAccountNum-1].setAutoLoan(newAccount);
+												}
+												index++;
+												if (index < inputLower.length() && inputLower.charAt(index) == ' ')
+												{
+													index++;
+													if (index < inputLower.length() && inputLower.charAt(index) == 'c')
+													{
+														if (customers[inputAccountNum-1].getChecking() == null)
+														{
+															CheckingAccount newAccount = new CheckingAccount();
+															customers[inputAccountNum-1].setChecking(newAccount);
+														}
+														if (customers[inputAccountNum-1].getAutoLoan().withdraw(inputAmountNum))
+														{
+															customers[inputAccountNum-1].getChecking().deposit(inputAmountNum);
+														}	
+													} else if (index < inputLower.length() && inputLower.charAt(index) == 's') {
+														if (customers[inputAccountNum-1].getSavings() == null)
+														{
+															SavingsAccount newAccount = new SavingsAccount();
+															customers[inputAccountNum-1].setSavings(newAccount);
+														}
+														if (customers[inputAccountNum-1].getAutoLoan().withdraw(inputAmountNum))
+														{
+															customers[inputAccountNum-1].getStudentLoan().deposit(inputAmountNum);
+														}
+													} else if (index < inputLower.length() && inputLower.charAt(index) == 'l') {
+														if (customers[inputAccountNum-1].getStudentLoan() == null)
+														{
+															SavingsAccount newAccount = new SavingsAccount();
+															customers[inputAccountNum-1].setSavings(newAccount);
+														}
+														if (customers[inputAccountNum-1].getAutoLoan().withdraw(inputAmountNum))
+														{
+															customers[inputAccountNum-1].getStudentLoan().deposit(inputAmountNum);
+														}
+													} else if (index < inputLower.length() && inputLower.charAt(index) == 'a') {
+														customers[inputAccountNum-1].getAutoLoan().deposit(0);	
+													} else {
+														System.out.println("Invalid transfer request, please try again.");
+													}
+												} else {
+													System.out.println("Invalid transfer request, please try again.");
+												}						
+											} else {
+												System.out.println("Invalid transfer request, please try again.");
+											}										
+										} else {
+											System.out.println("Invalid transfer request, please try again.");
+										}	
+								} else if (inputTrans == 'g') {
+									transType = inputLower.charAt(index);	
+									if (transType == 'c') {
+										if (customers[inputAccountNum-1].getChecking() == null)
+										{
+											CheckingAccount newAccount = new CheckingAccount();
+											customers[inputAccountNum-1].setChecking(newAccount);
+										}
+										System.out.println("The balance of your Checking account is $" + customers[inputAccountNum-1].getChecking().balance);	
+									} else if (transType == 's') {
+										if (customers[inputAccountNum-1].getSavings() == null)
+										{
+											SavingsAccount newAccount = new SavingsAccount();
+											customers[inputAccountNum-1].setSavings(newAccount);
+										}
+										System.out.println("The balance of your Savings account is $" + customers[inputAccountNum-1].getSavings().balance);	
+									} else if (transType == 'l') {
+										if (customers[inputAccountNum-1].getStudentLoan() == null)
+										{
+											SavingsAccount newAccount = new SavingsAccount();
+											customers[inputAccountNum-1].setStudentLoan(newAccount);
+										}
+										System.out.println("The balance of your Student Loan account is $" + customers[inputAccountNum-1].getStudentLoan().balance);												
+									} else if (transType == 'a') {						
+										if (customers[inputAccountNum-1].getAutoLoan() == null)
+										{
+											SavingsAccount newAccount = new SavingsAccount();
+											customers[inputAccountNum-1].setAutoLoan(newAccount);
+										}
+										System.out.println("The balance of your Auto Loan account is $" + customers[inputAccountNum-1].getAutoLoan().balance);							
+									} else {
+										System.out.println("Invalid account code, please try again.");
+									}							
+								} else {
+										System.out.println("Invalid transaction type, please try again.");
+									}
+								} else {
+									System.out.println("Invalid transaction type, please try again.");
+								}
+						} else {
+						System.out.println("Invalid transaction type, please try again.");
+						}
+					}
+				} else {
+				System.out.println("Invalid account number, please try again.");
+				}
+			} else {
+				System.out.println("Please enter a transaction.");
+			}
