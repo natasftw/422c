@@ -55,16 +55,16 @@ public class CheckingAccount extends BankAccount {
         		protection = overdraftAccount.getBalance();
         	}
         	
-        	double totalHoldings = balance + protection + OVERDRAFT_CHARGE;
+        	double totalBalance = balance + protection;
         	
         	boolean haveEnoughMoney = true;
         	
-        	if(totalHoldings < amount)
+        	if(totalBalance < (amount+20))
         	{
         		haveEnoughMoney = false;
         	}
         	
-        	if(haveEnoughMoney)
+           	if(haveEnoughMoney)
         	{
         		double difference = amount - balance;
         		balance = 0;
@@ -77,6 +77,7 @@ public class CheckingAccount extends BankAccount {
         		System.out.println("Insufficient funds.  Withdrawal not processed.");
         		return false;
         	}
+ 
         }
     }
 	
