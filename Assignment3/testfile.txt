@@ -1,0 +1,7 @@
+insert
+insert
+insert
+search
+update
+delete
+print
