@@ -212,6 +212,7 @@ public class Input {
 		
 		if(validInput)
 		{
+			newLine = newLine.trim();
 			length = newLine.length();
 			if(length != 0)
 			{
