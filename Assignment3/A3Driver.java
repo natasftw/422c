@@ -14,9 +14,14 @@ import java.util.*;
 
 public class A3Driver 
 	{
-
+	  	  	  
 	  public static void main(String[] args) 
 	  {
+
+		Item testi = new Item("guitar", 2, 238.12, 10.12325);
+		testi.printItemAttributes();
+
+		
 		if (args.length != 1) 
 		{
 			System.err.println ("Error: Incorrect number of command line arguments");
