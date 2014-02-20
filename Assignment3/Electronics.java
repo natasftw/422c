@@ -16,6 +16,7 @@ public class Electronics extends Item {
 	private String deliveryState;
 	private boolean isFragile;
 	private final double defaultTax = 1.1;
+	private final double premiumMultiplier = 1.2;
 	
 /**
  * Constructors are inherited with an additional constructor
@@ -58,7 +59,16 @@ public class Electronics extends Item {
  */
 		private double calculatePrice () 
 		{
-			double finalPrice = 0;
+			double shippingPrice;
+			double finalPrice;
+			double weightMultiplier = 20;
+			shippingPrice = weightMultiplier * weight * quantity;
+			if(isFragile)
+			{
+				shippingPrice = shippingPrice * premiumMultiplier;
+			}
+			finalPrice = price * quantity;
+			finalPrice = finalPrice + shippingPrice;
 			finalPrice = convertToDollars(finalPrice);
 			return finalPrice;
 		}
@@ -69,7 +79,11 @@ public class Electronics extends Item {
  */
 		public void printItemAttributes () 
 		{
-			System.out.println(name + " is a Grocery.");
+			double shippingPrice = calculatePrice();
+			System.out.println("The cart contains " + quantity + 
+					" " + name + "(s).  Base price per item is: $" + 
+					price + ".  Total cost including applicable tax and shipping is: $" +
+					shippingPrice);
 		}
 
 /**
@@ -86,5 +100,38 @@ public class Electronics extends Item {
 				return 1;	//No sales tax means we want a multiplier of 1.
 			}
 			return defaultTax;	//Otherwise, return the default sales tax.
+		}
+		
+/**
+ * A series of setters and getters for Electronics attributes.
+ */
+		public double getSalesTax()
+		{
+			return salesTax;
+		}
+		
+		public String getDeliveryState()
+		{
+			return deliveryState;
+		}
+		
+		public boolean getIsFragile()
+		{
+			return isFragile;
+		}
+		
+		public void setSalesTax(double newTax)
+		{
+			salesTax = newTax;
+		}
+		
+		public void setDeliveryState(String newState)
+		{
+			deliveryState = newState;
+		}
+		
+		public void setIsFragile(boolean fragileStatus)
+		{
+			isFragile = fragileStatus;
 		}
 }

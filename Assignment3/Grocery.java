@@ -11,8 +11,10 @@ public class Grocery extends Item {
 /**
  * Groceries are items, but can be perishable.
  * Only one additional attribute required.
+ * A constant is included to handle premium shipping costs.
  */
 	private boolean isPerishable;
+	private final double premiumShipping = 1.2;
 	
 /**
  * Constructors are inherited, but add on the perishable
@@ -45,7 +47,16 @@ public class Grocery extends Item {
  */
 	private double calculatePrice () 
 	{
-		double finalPrice = 0;
+		double shippingPrice;
+		double finalPrice;
+		double weightMultiplier = 20;
+		shippingPrice = weightMultiplier * weight * quantity;
+		if(isPerishable)
+		{
+			shippingPrice = shippingPrice * premiumShipping;
+		}
+		finalPrice = price * quantity;
+		finalPrice = finalPrice + shippingPrice;
 		finalPrice = convertToDollars(finalPrice);
 		return finalPrice;
 	}
@@ -56,7 +67,11 @@ public class Grocery extends Item {
  */
 	public void printItemAttributes () 
 	{
-		System.out.println(name + " is a Grocery.");
+		double shippingPrice = calculatePrice();
+		System.out.println("The cart contains " + quantity + 
+				" " + name + "(s).  Base price per item is: $" + 
+				price + ".  Total cost including shipping is: $" +
+				shippingPrice);
 	}
 	
 }

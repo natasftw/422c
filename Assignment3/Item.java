@@ -87,13 +87,17 @@ public class Item
 		String balanceString = Double.toString(cashValue);
 		char decimal = '.';
 		int decimalPlacing = balanceString.indexOf(decimal);
-		if(decimalPlacing == '1')
+		if(decimalPlacing == -1)
+		{
+			System.out.println("No decimal was found.");
+		}
+		if(decimalPlacing == 1)
 		{
 			cashValue = Double.parseDouble(balanceString);
 		} else {
 			int balanceLength = balanceString.length();
 			balanceLength = balanceLength - decimalPlacing;
-			if(balanceLength == 1)
+			if(balanceLength == 1 || balanceLength == 2)
 			{
 				cashValue = Double.parseDouble(balanceString);
 			} else {

@@ -40,18 +40,40 @@ public class Clothing extends Item {
  */
 		private double calculatePrice () 
 		{
-			double finalPrice = 0;
+			double shippingPrice;
+			double finalPrice;
+			double weightMultiplier = 20;
+			shippingPrice = weightMultiplier * weight * quantity * salesTax;
+			finalPrice = price * quantity;
+			finalPrice = finalPrice + shippingPrice;
 			finalPrice = convertToDollars(finalPrice);
 			return finalPrice;
 		}
 		
 /**
- * This method overwrites the Item method to alert the user if
- * the
- 
+ * This method overwrites the Item method to use Clothing's
+ * calculatePrice method instead of Item's
+ */
 		public void printItemAttributes () 
 		{
-			System.out.println(name + " is a Grocery.");
+			double shippingPrice = calculatePrice();
+			System.out.println("The cart contains " + quantity + 
+					" " + name + "(s).  Base price per item is: $" + 
+					price + ".  Total cost including tax and shipping is: $" +
+					shippingPrice);
 		}
+
+/**
+ * Just to be complete, there are a getter and setter for salesTax
  */
+		public double getSalesTax()
+		{
+			return salesTax;
+		}
+		
+		public void setSalesTax(double newTax)
+		{
+			salesTax = newTax;
+		}
+		
 }

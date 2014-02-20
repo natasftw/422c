@@ -19,6 +19,15 @@ public class A3Driver
 	  {
 
 		Item testi = new Item("guitar", 2, 238.12, 10.12325);
+		Clothing testc = new Clothing("shirt", 1, 23.12, 1.2);
+		Electronics teste = new Electronics("laptop", 1, 1000, 15.3, "HI", true);
+		Grocery testg = new Grocery("apple", 1, 1, 1, true);
+		testi.printItemAttributes();
+		testi = testc;
+		testi.printItemAttributes();
+		testi = teste;
+		testi.printItemAttributes();
+		testi = testg;
 		testi.printItemAttributes();
 
 		
