@@ -1,4 +1,7 @@
 insert Clothing shirt 20.50 1 1.5
+insert clothing jeans -20 1 1
+insert clothing skirt 20 -1 1
+insert clothing glasses 20 1 -1
 insert clothing pants 20.123 1 1
 insert clothing tie 0.12 1 0
 insert clothing jacket 1.13.1 1 1
