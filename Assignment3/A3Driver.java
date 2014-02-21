@@ -44,7 +44,7 @@ public class A3Driver
 						System.out.println("The cart has " + length + " items in it.");
 					} else if(operation.contentEquals("search")) {
 						boolean printResults = true;
-						processSearch(shoppingCart, currentInput, printResults);
+						processSearch(shoppingCart, currentInput);
 					} else if(operation.contentEquals("update")) {
 						processUpdate(shoppingCart, currentInput);
 					} else if(operation.contentEquals("delete")) {
@@ -75,28 +75,134 @@ public class A3Driver
  */
 	  private static void processInsert(ArrayList<Item> cart, Input inputData)
 	  {
+		  boolean alreadyExists = false;
+		  String category = inputData.getCategory();
+		  String name = inputData.getName();
+		  double price = inputData.getPrice();
+		  double weight = inputData.getWeight();
+		  int quantity = inputData.getQuantity();
+		  
+		  //We need to keep the list ordered alphabetically by item
+		  //name.  insertIndex will track where to place the new item.
+		  //If it isn't set, we want to insert at the end.  This line
+		  //ensures the end of the ArrayList is the default location.
+		  int insertIndex = cart.size();
+		  int currentIndex = 0;
+		  
+		  boolean needIndex = true;
+		  
+		  if(insertIndex == 0)
+		  {
+			  needIndex = false; //Ensures we won't references out of bounds.
+		  }
+		  
+		  while(needIndex)
+		  {
+			  Item currentItem = cart.get(currentIndex);
+			  int alphaTest = name.compareTo(currentItem.getName());
+			  if(alphaTest == 0)
+			  {
+				  alreadyExists = true;
+				  needIndex = false;
+			  } else if(alphaTest < 0) {
+				  //argument is lexigraphically greater than
+				  needIndex = false;
+				  insertIndex = currentIndex;
+			  } else {
+				  //argument is lexigraphically less
+				  currentIndex = currentIndex + 1;
+			  }	  
+		  }
+		  
 		  //search cart for item
-		  //if item exists, add quantity to current item
-		  //otherwise, create an object and add it to cart
-		  System.out.println("Insert method called.");
-		  Clothing shirt = new Clothing("shirt", 1, 1, 1);
-		  cart.add(shirt);
+		  if(alreadyExists)
+		  {
+			  //if item exists, add quantity to current item
+		  } else {
+			  if(category.contentEquals("grocery"))
+			  {
+				  boolean isPerishable = inputData.getIsPerishable();
+				  Grocery newGrocery = new Grocery(name, quantity, price, weight,
+						  isPerishable);
+				  cart.add(insertIndex, newGrocery);
+			  } else if(category.contentEquals("electronics")) {
+				  boolean isFragile = inputData.getIsFragile();
+				  String deliveryState = inputData.getDeliveryState();
+				  Electronics newElec = new Electronics(name, quantity, price,
+						  weight, deliveryState, isFragile);
+				  cart.add(insertIndex, newElec);
+			  } else {
+				  Clothing newClothing = new Clothing(name, quantity, price, weight);
+				  cart.add(insertIndex, newClothing);
+			  }
+			  System.out.println(name + " added to cart with " + quantity + 
+					  " item(s) priced at $" + price + " per unit.  Each item weighs: "
+					  + weight + ".");
+		  }
 	  }
 	 
 /**
  * A method to search through the ArrayList to find the desired item.
  * @param cart - the cart's ArrayList
  * @param inputData - the Input object with the item to search for
- * @param showResults - surpresses results for use within other methods
  */
-	  private static void processSearch(ArrayList<Item> cart, Input inputData, 
-			  boolean showResults)
+	  private static void processSearch(ArrayList<Item> cart, Input inputData)
 	  {
-		  //search the cart for the item
-		  //currently have a boolean, maybe replace with an int return
-		  //return lets other methods use this to check.  
-		  //show results lets this method print results to screen if needed
-		  System.out.println("Search method called.");
+		  String name = inputData.getName();
+		  
+		  int maxIndex = cart.size();
+		  int currentIndex = 0;
+		  
+		  boolean needIndex = true;
+		  boolean foundItem = false;
+		  
+		  if(maxIndex == 0)
+		  {
+			  needIndex = false; //Ensures we won't references out of bounds.
+		  }
+		  
+		  while(needIndex)
+		  {
+			  Item currentItem = cart.get(currentIndex);
+			  int alphaTest = name.compareTo(currentItem.getName());
+			  if(alphaTest == 0)
+			  {
+				  //match found.  send output
+				  int quantity = currentItem.getQuantity();
+				  double price = currentItem.getPrice();
+
+				  System.out.println("There are currently " + quantity +
+						  " " + name + "(s) in the cart priced at $" +
+						  price + " each.");
+				  foundItem = true;
+				  currentIndex = currentIndex + 1;
+				  if(currentIndex == maxIndex)
+				  {
+					  needIndex = false;
+				  }
+			  } else if(alphaTest < 0) {
+				  //if this case occurs, a match cannot exist.  There's no
+				  //reason to continue checking.  Output failure message.
+				  needIndex = false;
+				  if(!foundItem) 
+				  {
+					  System.out.println(name + " not found in the cart.");
+				  }
+			  } else {
+				  //argument is lexigraphically less.  This means we should
+				  //check the next value.  If this was the last value, we need
+				  //to stop checking.
+				  currentIndex = currentIndex + 1;
+				  if(currentIndex == maxIndex)
+				  {
+					  needIndex = false;
+					  if(!foundItem)
+					  {
+						  System.out.println(name + " not found in the cart.");
+					  }
+				  }
+			  }	  
+		  }
 	  }
 	  
 /**
@@ -132,10 +238,22 @@ public class A3Driver
  */
 	  private static void processPrint(ArrayList<Item> cart)
 	  {
-		  //check if cart is empty
-		  //if empty, say so
-		  //else, iterate through the cart calling showItemAttributes
-		  System.out.println("Print method called.");
+		  double totalCartCost = 0;
+		  
+		  int length = cart.size();
+		  if(length == 0)
+		  {
+			  System.out.println("Isn't it strange to display an empty cart?");
+		  } else {
+			  Iterator<Item> i = cart.iterator();
+			  while (i.hasNext()) 
+			  {
+				  Item temp = i.next();
+				  double itemCost = temp.printItemAttributes();
+				  totalCartCost = totalCartCost + itemCost;
+			  }
+			  System.out.println("The total price for your cart is: $" + totalCartCost);
+		  }
 	  }
 }
 

@@ -1,4 +1,5 @@
 insert Clothing shirt 20.50 1 1.5
+insert Clothing shirt 20.50 2 1.5
 insert clothing jeans -20 1 1
 insert clothing skirt 20 -1 1
 insert clothing glasses 20 1 -1
@@ -19,6 +20,7 @@ insert electronics pc 1000 1 1 f aa
 insert grocery ramen 1 1 1 q
 insert failure cherry 1 1 1
 searCh shirt
+search zebra
 invalid
 update SHirt 5
 delETE apple

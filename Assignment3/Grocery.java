@@ -65,13 +65,14 @@ public class Grocery extends Item {
  * This method overwrites the Item method to alert the user if
  * the grocery is perishable.
  */
-	public void printItemAttributes () 
+	public double printItemAttributes () 
 	{
 		double shippingPrice = calculatePrice();
 		System.out.println("The cart contains " + quantity + 
 				" " + name + "(s).  Base price per item is: $" + 
 				price + ".  Total cost including shipping is: $" +
 				shippingPrice);
+		return shippingPrice;
 	}
 	
 }

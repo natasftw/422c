@@ -54,13 +54,14 @@ public class Clothing extends Item {
  * This method overwrites the Item method to use Clothing's
  * calculatePrice method instead of Item's
  */
-		public void printItemAttributes () 
+		public double printItemAttributes () 
 		{
 			double shippingPrice = calculatePrice();
 			System.out.println("The cart contains " + quantity + 
 					" " + name + "(s).  Base price per item is: $" + 
 					price + ".  Total cost including tax and shipping is: $" +
 					shippingPrice);
+			return shippingPrice;
 		}
 
 /**

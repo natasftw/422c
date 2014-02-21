@@ -77,13 +77,14 @@ public class Electronics extends Item {
  * This method overwrites the Item method to alert the user if
  * the electronics are fragile and where they'll ship.
  */
-		public void printItemAttributes () 
+		public double printItemAttributes () 
 		{
 			double shippingPrice = calculatePrice();
 			System.out.println("The cart contains " + quantity + 
 					" " + name + "(s).  Base price per item is: $" + 
 					price + ".  Total cost including applicable tax and shipping is: $" +
 					shippingPrice);
+			return shippingPrice;
 		}
 
 /**
