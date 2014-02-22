@@ -147,7 +147,7 @@ public class A3Driver
  * @param cart - the cart's ArrayList
  * @param inputData - the Input object with the item to search for
  */
-	  private static void processSearch(ArrayList<Item> cart, Input inputData)
+	  private static int processSearch(ArrayList<Item> cart, Input inputData)
 	  {
 		  String name = inputData.getName();
 		  
@@ -176,11 +176,12 @@ public class A3Driver
 						  " " + name + "(s) in the cart priced at $" +
 						  price + " each.");
 				  foundItem = true;
-				  currentIndex = currentIndex + 1;
+				  return currentIndex;
+				 /* currentIndex = currentIndex + 1;
 				  if(currentIndex == maxIndex)
 				  {
 					  needIndex = false;
-				  }
+				  }*/
 			  } else if(alphaTest < 0) {
 				  //if this case occurs, a match cannot exist.  There's no
 				  //reason to continue checking.  Output failure message.
@@ -188,6 +189,7 @@ public class A3Driver
 				  if(!foundItem) 
 				  {
 					  System.out.println(name + " not found in the cart.");
+					  return -1;
 				  }
 			  } else {
 				  //argument is lexigraphically less.  This means we should
@@ -200,10 +202,12 @@ public class A3Driver
 					  if(!foundItem)
 					  {
 						  System.out.println(name + " not found in the cart.");
+						  return -1;
 					  }
 				  }
 			  }	  
 		  }
+		  return -1;
 	  }
 	  
 /**
@@ -213,10 +217,50 @@ public class A3Driver
  */
 	  private static void processUpdate(ArrayList<Item> cart, Input inputData)
 	  {
-		  //search for item
-		  //if item exists, update it
-		  //else, send error message
-		  System.out.println("Update method called.");
+		  boolean alreadyExists = false; 
+		  String name = inputData.getName();
+		  int quantity = inputData.getQuantity();
+		  
+		  //We need to keep the list ordered alphabetically by item
+		  //name.  insertIndex will track where to place the new item.
+		  //If it isn't set, we want to insert at the end.  This line
+		  //ensures the end of the ArrayList is the default location.
+		  int insertIndex = cart.size();
+		  int currentIndex = 0;
+		  
+		  boolean needIndex = true;
+		  
+		  if(insertIndex == 0)
+		  {
+			  needIndex = false; //Ensures we won't references out of bounds.
+		  }
+		  
+		  while(needIndex)
+		  {
+			  Item currentItem = cart.get(currentIndex);
+			  int alphaTest = name.compareTo(currentItem.getName());
+			  if(alphaTest == 0)
+			  {
+				  alreadyExists = true;
+				  needIndex = false;
+			  } else if(alphaTest < 0) {
+				  //argument is lexigraphically greater than
+				  needIndex = false;
+				  insertIndex = currentIndex;
+			  } else {
+				  //argument is lexigraphically less
+				  currentIndex = currentIndex + 1;
+			  }	  
+		  }
+		  
+		  //search cart for item
+		  if(alreadyExists)
+		  {
+			  //if item exists, update quantity for current item
+			  cart.get(currentIndex).setQuantity(quantity);
+		  } else {
+			  System.out.println(name + " not found in the cart.");
+		  }  
 	  }
 	  
 /**
@@ -230,7 +274,41 @@ public class A3Driver
 		  //delete all of them
 		  //update console with each deletion
 		  //list error message if none deleted
-		  System.out.println("Delete method called.");
+		  //System.out.println("Delete method called.");
+		  
+		  String name = inputData.getName();
+		  
+		  //We need to keep the list ordered alphabetically by item
+		  //name.  insertIndex will track where to place the new item.
+		  //If it isn't set, we want to insert at the end.  This line
+		  //ensures the end of the ArrayList is the default location.
+		  int insertIndex = cart.size();
+		  int currentIndex = 0;
+		  
+		  boolean needIndex = true;
+		  
+		  if(insertIndex == 0)
+		  {
+			  needIndex = false; //Ensures we won't references out of bounds.
+		  }
+		  
+		  while(needIndex)
+		  {
+			  Item currentItem = cart.get(currentIndex);
+			  int alphaTest = name.compareTo(currentItem.getName());
+			  if(alphaTest == 0)
+			  {
+				  cart.remove(currentIndex);				 
+				  needIndex = false;
+			  } else if(alphaTest < 0) {
+				  //argument is lexigraphically greater than
+				  needIndex = false;
+				  insertIndex = currentIndex;
+			  } else {
+				  //argument is lexigraphically less
+				  currentIndex = currentIndex + 1;
+			  }	  
+		  }
 	  }
 	  
 /**
