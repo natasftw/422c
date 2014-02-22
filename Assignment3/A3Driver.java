@@ -104,6 +104,7 @@ public class A3Driver
 			  {
 				  alreadyExists = true;
 				  needIndex = false;
+				  System.out.println(name + " already exists in the cart. Please use update to change quantity.");
 			  } else if(alphaTest < 0) {
 				  //argument is lexigraphically greater than
 				  needIndex = false;
