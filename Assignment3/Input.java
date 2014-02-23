@@ -163,7 +163,7 @@ public class Input {
 				quantity = Integer.parseInt(currentWord);
 				if(quantity == 0)
 				{
-					System.out.println("Insert 0 items? No thank you");
+					System.out.println("You want a quantity of 0?  Let's not do that.");
 					emptyInput();
 				}
 			} else {
