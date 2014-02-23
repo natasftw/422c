@@ -40,10 +40,7 @@ public class A3Driver
 					if(operation.contentEquals("insert"))
 					{
 						processInsert(shoppingCart, currentInput);
-						int length = shoppingCart.size();
-						System.out.println("The cart has " + length + " items in it.");
 					} else if(operation.contentEquals("search")) {
-						boolean printResults = true;
 						processSearch(shoppingCart, currentInput);
 					} else if(operation.contentEquals("update")) {
 						processUpdate(shoppingCart, currentInput);
@@ -54,6 +51,7 @@ public class A3Driver
 					}
 				}
 			}
+			reader.close();
 		} 
 		catch (FileNotFoundException e) 
 		{
@@ -155,11 +153,11 @@ public class A3Driver
 		  int currentIndex = 0;
 		  
 		  boolean needIndex = true;
-		  boolean foundItem = false;
 		  
 		  if(maxIndex == 0)
 		  {
 			  needIndex = false; //Ensures we won't references out of bounds.
+			  System.out.println("Do you really want me to search through an empty cart?");
 		  }
 		  
 		  while(needIndex)
@@ -175,20 +173,12 @@ public class A3Driver
 				  System.out.println("There are currently " + quantity +
 						  " " + name + "(s) in the cart priced at $" +
 						  price + " each.");
-				  foundItem = true;
-				  currentIndex = currentIndex + 1;
-				  if(currentIndex == maxIndex)
-				  {
-					  needIndex = false;
-				  }
+				  needIndex = false;
 			  } else if(alphaTest < 0) {
 				  //if this case occurs, a match cannot exist.  There's no
 				  //reason to continue checking.  Output failure message.
 				  needIndex = false;
-				  if(!foundItem) 
-				  {
-					  System.out.println(name + " not found in the cart.");
-				  }
+				  System.out.println(name + " not found in the cart.");
 			  } else {
 				  //argument is lexigraphically less.  This means we should
 				  //check the next value.  If this was the last value, we need
@@ -197,40 +187,114 @@ public class A3Driver
 				  if(currentIndex == maxIndex)
 				  {
 					  needIndex = false;
-					  if(!foundItem)
-					  {
-						  System.out.println(name + " not found in the cart.");
-					  }
+					  System.out.println(name + " not found in the cart.");
 				  }
 			  }	  
 		  }
 	  }
 	  
 /**
- * A method to update cart items to the new value.
+ * A method to update cart items to the new value.  It searches for the item
+ * and updates the quantity if it exists.  After it updates the item or 
+ * determines the item doesn't exist, it updates the console with the 
+ * transaction's details.
  * @param cart - the cart's ArrayList
  * @param inputData - the Input object with the update information
  */
 	  private static void processUpdate(ArrayList<Item> cart, Input inputData)
-	  {
-		  //search for item
-		  //if item exists, update it
-		  //else, send error message
-		  System.out.println("Update method called.");
+	  { 
+		  String name = inputData.getName();
+		  int quantity = inputData.getQuantity();
+		  
+		  int maxIndex = cart.size();
+		  int currentIndex = 0;
+		  
+		  boolean needIndex = true;
+		  
+		  if(maxIndex == 0)
+		  {
+			  needIndex = false; //Ensures we won't references out of bounds.
+			  System.out.println("The cart is empty.  I can't update your item.");
+		  }
+		  
+		  while(needIndex)
+		  {
+			  Item currentItem = cart.get(currentIndex);
+			  int alphaTest = name.compareTo(currentItem.getName());
+			  if(alphaTest == 0)
+			  {
+				  //if item matches, update quantity for current item
+				  cart.get(currentIndex).setQuantity(quantity);
+				  needIndex = false;
+				  System.out.println(name + " updated to a quantity of: " + quantity);
+			  } else if(alphaTest < 0) {
+				  //We cannot find a possible match as all remaining items
+				  //in the cart are less than the item we want to update.
+				  needIndex = false;
+				  System.out.println(name + " was not found in our cart.");
+			  } else {
+				  //Check the next item.
+				  currentIndex = currentIndex + 1;
+				  if(currentIndex == maxIndex)
+				  {
+					  needIndex = false;
+					  System.out.println(name + " was not found in our cart.");
+				  }
+			  }	  
+		  }
 	  }
 	  
 /**
  * A method to remove objects from the cart
+ * Our insert method limits the cart to having a single object of any name.
+ * As a result, we only need to delete one item and we know all have been deleted.
  * @param cart - the cart's ArrayList
  * @param inputData - details about the object to remove
  */
 	  private static void processDelete(ArrayList<Item> cart, Input inputData)
-	  {
-		  //look for all items with that name
-		  //delete all of them
-		  //update console with each deletion
-		  //list error message if none deleted
-		  System.out.println("Delete method called.");
+	  {		  
+		  String name = inputData.getName();
+		  
+		  int maxIndex = cart.size();
+		  int currentIndex = 0;
+		  
+		  boolean needIndex = true;
+		  
+		  if(maxIndex == 0)
+		  {
+			  needIndex = false; //Ensures we won't references out of bounds.
+			  System.out.println("The cart is empty.  There's nothing to delete.");
+		  }
+		  
+		  while(needIndex)
+		  {
+			  Item currentItem = cart.get(currentIndex);
+			  int alphaTest = name.compareTo(currentItem.getName());
+			  if(alphaTest == 0)
+			  {
+				  //Item matches desired deletion.  It is deleted
+				  //and boolean is set to end while loop
+				  cart.remove(currentIndex);				 
+				  needIndex = false;
+				  System.out.println(name + " was deleted from the cart.");
+			  } else if(alphaTest < 0) {
+				  //The item being checked comes after the desired
+				  //deletion item.  It cannot exist in our cart so
+				  //the loop is exited and console alerted.
+				  needIndex = false;
+				  System.out.println(name + " not found in cart.  As such, it wasn't deleted.");
+			  } else {
+				  //We need to check the next item in the cart.
+				  currentIndex = currentIndex + 1;
+				  //If we reached the end of the cart, we need to exit
+				  //the while loop.
+				  if(currentIndex == maxIndex)
+				  {
+					  needIndex = false;
+					  System.out.println(name + " not found in cart.  As such, it wasn't deleted.");
+				  }
+			  }	  
+		  }
 	  }
 	  
 /**
@@ -257,26 +321,3 @@ public class A3Driver
 		  }
 	  }
 }
-
-
-/**
- *    Everything below this is starter code.		  
- */
-		  
-		//Stub for arraylist.
-//		ArrayList<Item> shoppingCart = new ArrayList<Item>(); 
-/*		
-		// General code example for how to iterate an array list. You will have to modify this heavily, to suit your needs.
-		Iterator<Item> i = shoppingCart.iterator();
-		while (i.hasNext()) 
-		{
-			Item temp = i.next();
-			temp.calculatePrice(); 
-			temp.printItemAttributes();
-			//This (above) works because of polymorphism: a determination is made at runtime, 
-			//based on the inherited class type, as to which method is to be invoked. Eg: If it is an instance
-			// of Grocery, it will invoke the calculatePrice () method defined in Grocery.
-			 * 
-
-		}
-*/	

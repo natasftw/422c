@@ -41,19 +41,36 @@ public class Input {
 		String currentWord = new String();
 		newLine = newLine.toLowerCase();
 		
+		//First, we need to check to make sure the input text
+		//actually includes text.  If not, we need to exit.
+		
 		int length = newLine.length();
 		
 		if(length == 0)
 		{
 			validInput = false;
+			emptyInput();
 		} else {
 			validInput = true;
 		}
 		
+		//The input will be in one of several forms.  We will pull
+		//a "word" at a time from the input.  Each word is an input
+		//field that may, or may not, need to be processed.  Once an
+		//input is found to be bad, the rest of the checks are
+		//unimportant.  As such, each step will check to see if we have
+		//a valid input.  If not, it will skip any processing.
+		
 		if(validInput)
 		{
+			//Get a new word and trip the input to only include
+			//new information for the next step.
 			currentWord = getWord(newLine);
 			newLine = trimInput(currentWord, newLine);
+			
+			//Check to see if the word is one of our operations
+			//If so, we set operation to the word.  If not, we need
+			//to treat the input as bad.
 			boolean statusCheck = verifyOperation(currentWord);
 			if(statusCheck)
 			{
@@ -63,6 +80,9 @@ public class Input {
 			}
 		}
 		
+		//The print operation doesn't require any more input.  We
+		//only need to continue looking for data if the input passed
+		//the first step and isn't print.
 		needData = validInput && !operation.contentEquals("print");
 		
 		if(needData)
@@ -70,8 +90,14 @@ public class Input {
 			currentWord = getWord(newLine);
 			newLine = trimInput(currentWord, newLine);
 			
+			//We need to handle insert different than other operations.
+			//This is because insert has a category field.
 			if(operation.contentEquals("insert"))
 			{
+				//This ensures the category is one that exists.
+				//If so, we fill in the category and grab another
+				//word to fill in the name field.  Otherwise, 
+				//we process it as a bad input.
 				boolean statusCheck = verifyCategory(currentWord);
 				if(statusCheck)
 				{
@@ -83,11 +109,18 @@ public class Input {
 					emptyInput();
 				}
 			} else if(validInput) {
+				//All other operations accept name as the next input
+				//item.  This is set.
 				category = "NA";
 				name = currentWord;
 			}
 		}
 		
+		//Again, we check to make sure our input is still valid
+		//before processing the next word.  If the operation is an
+		//insert, there will be an additional price field here.  
+		//We only handle this here.  If the operation isn't insert,
+		//the if-statement will fail and nothing will be processed.
 		if(validInput)
 		{
 			if(operation.contentEquals("insert"))
@@ -95,8 +128,10 @@ public class Input {
 				currentWord = getWord(newLine);
 				newLine = trimInput(currentWord, newLine);
 				
+				//Call a method to verify the price is valid.
 				boolean statusCheck = verifyPrice(currentWord);
 
+				//If it's valid, we set price.  Otherwise, we post an error.
 				if(statusCheck)
 				{
 					price = Double.parseDouble(currentWord);
@@ -107,6 +142,9 @@ public class Input {
 			}
 		}
 		
+		//The only operations that still need input are insert and update.
+		//This checks to see if we have one of those operations.  If so,
+		//we check to see if the input is still valid.  
 		needData = operation.contentEquals("insert") || operation.contentEquals("update");
 		needData = needData && validInput;
 		
@@ -114,6 +152,10 @@ public class Input {
 		{
 			currentWord = getWord(newLine);
 			newLine = trimInput(currentWord, newLine);
+			
+			//This field is a quantity field.  We need to verify
+			//the input is a positive whole number.  It's rather difficult
+			//to have negative bananas or a fraction of a banana in our cart.
 			boolean statusCheck = verifyQuantity(currentWord);
 			
 			if(statusCheck)
@@ -130,12 +172,16 @@ public class Input {
 			}
 		}
 			
+		//At this point, only the insert operation can have any further
+		//input fields.  
 		needData = validInput && operation.contentEquals("insert");
 		if(needData)
 		{
 			currentWord = getWord(newLine);
 			newLine = trimInput(currentWord, newLine);
 			
+			//First, we fill in the weight field if the input contains
+			//a valid weight.
 			boolean statusCheck = verifyWeight(currentWord);
 			if(statusCheck)
 			{
@@ -151,9 +197,13 @@ public class Input {
 			}
 		}
 		
+		//This just makes sure weight was valid and doesn't create a mess
+		//of nested if-statements.
 		needData = validInput && operation.contentEquals("insert");
 		if(needData)
 		{
+			//The clothing category is complete.  We don't need any
+			//more input if this is the case.
 			if(category.contentEquals("clothing"))
 			{
 				needData = false;
@@ -165,6 +215,11 @@ public class Input {
 			currentWord = getWord(newLine);
 			newLine = trimInput(currentWord, newLine);
 			
+			//We quickly check if the next input is a valid
+			//code for the category type.  Then, we set the 
+			//appropriate attribute to match the code.
+			//Initially, we set these booleans to be false so
+			//our code here only needs to update the true cases.
 			boolean statusCheck = verifyCode(currentWord);
 			if(statusCheck)
 			{
@@ -186,6 +241,9 @@ public class Input {
 			}
 		}
 
+		//The only potential input at this point is the state to deliver
+		//an electroncis item to within the insert command.  We check
+		//for this case.
 		needData = validInput && operation.contentEquals("insert");
 		if(needData)
 		{
@@ -200,9 +258,12 @@ public class Input {
 			currentWord = getWord(newLine);
 			newLine = trimInput(currentWord, newLine);
 			
+			//This method verifies the code matches one of the
+			//50 possible state codes.
 			boolean statusCheck = verifyState(currentWord);
 			if(statusCheck)
 			{
+				//State codes look better in uppercase.
 				deliveryState = currentWord.toUpperCase();
 			} else {
 				System.out.println("Invalid State. Please try again.");
@@ -210,30 +271,27 @@ public class Input {
 			}
 		}
 		
+		//If we get here with a valid input, there aren't any more fields
+		//to process.  But, we need to make sure there isn't additional
+		//information in the input line.  If so, the line is erroneous
+		//and we need to alert the user.
 		if(validInput)
 		{
+			//Trimming removes all white space at the front and back
+			//of a string.  If the string is purely white space, it is 
+			//all deleted.  Using this command allows us to ignore extra
+			//spaces at the end of the input and process the input.
+			//We don't care if the user hit the space bar one time too many.
 			newLine = newLine.trim();
 			length = newLine.length();
+			
+			//If we enter this if-statement, there is more information in the 
+			//input so we need to alert the user to the error.
 			if(length != 0)
 			{
 				System.out.println("Extra characters detected.  Input discarded");
 				emptyInput();
 			}
-		}
-		
-		if(validInput)
-		{
-			//System.out.println("Operation: " + operation); 
-			//System.out.println("Category: " + category);
-			//System.out.println("Name: " + name);
-			//System.out.println("Price: " + price);
-			//System.out.println("Quantity: " + quantity);
-			//System.out.println("Weight: " + weight);
-			//System.out.println("Fragile: " + isFragile);
-			//System.out.println("Perishable: " + isPerishable);
-			//System.out.println("Deliver to: " + deliveryState);
-			//System.out.println("remaining string: " + newLine);
-			//System.out.println("Valid input detected.");
 		}
 	}
 	
@@ -302,7 +360,8 @@ public class Input {
 		char space = ' ';
 		String newWord = new String();
 		
-				
+		//This ensures we don't try to operate on a space if any
+		//input fields are split by 2 or more spaces.
 		nextSpace = inputString.indexOf(space);
 		while(nextSpace == 0)
 		{
@@ -310,7 +369,8 @@ public class Input {
 			nextSpace = inputString.indexOf(space);
 		}
 		
-		
+		//nextSpace will be -1 if a space doesn't exist in the string.
+		//If a space exists, we only need the word up until the space
 		if(nextSpace > 0)
 		{
 			newWord = inputString.substring(0, nextSpace);
@@ -433,8 +493,8 @@ public class Input {
 /**
  * 	Checks a string to see if it can possibly be a price.
  * 	It returns a false if any inappropriate characters exist.
- * 	Returns a false if more than one decimal.
- * 	Returns a false if more than two decimal places.
+ * 	Returns a false if more than one decimal found in string.
+ * 	Returns a false if digits in more than two decimal places.
  */
 	private boolean verifyPrice(String price)
 	{		

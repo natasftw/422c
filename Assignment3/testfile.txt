@@ -1,4 +1,8 @@
-insert Clothing shirt 20.50 1 1.5
+delete apple
+search apple
+update apple 5
+print
+insert   Clothing shirt 20.50 1 1.5
 insert Clothing shirt 20.50 2 1.5
 insert clothing jeans -20 1 1
 insert clothing skirt 20 -1 1
@@ -24,6 +28,7 @@ search zebra
 invalid
 update SHirt 5
 delETE apple
+delete steak
 PrInT
 print this
 update shirt 5 now
