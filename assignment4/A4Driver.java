@@ -42,6 +42,7 @@ class A4Driver {
 								" and " + word2 + ".");
 					}
 				}
+				reader.close();
 			}
 			System.out.println(" ");	//print out a blank line for cleaner output
 		}

@@ -17,13 +17,16 @@ public class Dictionary{
 	//public Dictionary(String args[]){
 		try 
 		{
-		FileReader freader = new FileReader(f);
-		BufferedReader reader = new BufferedReader(freader);
-		for (String s = reader.readLine(); s != null; s = reader.readLine()){
-			if(isLetter(s.charAt(0))){
-				words.add(s.substring(0,5));
+			FileReader freader = new FileReader(f);
+			BufferedReader reader = new BufferedReader(freader);
+			for (String s = reader.readLine(); s != null; s = reader.readLine())
+			{
+				if(isLetter(s.charAt(0)))
+				{
+					words.add(s.substring(0,5));
+				}
 			}
-	}
+			reader.close();
 		}
 		catch (FileNotFoundException e) 
 		{
@@ -36,7 +39,6 @@ public class Dictionary{
 			e.printStackTrace();
 			System.exit(-1);
 		}
-		
 	}
 	
 	//checks if a character is a letter of the alphabet
