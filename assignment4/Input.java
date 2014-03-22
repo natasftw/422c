@@ -1,12 +1,21 @@
 package assignment4;
 
 public class Input {
-
+/**
+ * All attributes are private with getters implemented below.
+ */
+	private boolean validInput;
 	private String firstWord;
 	private String lastWord;
-	private boolean validInput;
 	
-	public Input(String input) {
+/**
+ * The constructor handles the input processing and outputs error
+ * messages as appropriate.
+ * @param input - the input string received
+ * @param dict - our working dictionary to ensure words are real
+ */
+	public Input(String input, Dictionary dict)
+	{
 		input = input.trim();
 		
 		char space = ' ';
@@ -17,6 +26,7 @@ public class Input {
 			firstWord = "none";
 			lastWord = "none";
 			validInput = false;
+			System.out.println("You didn't input two words.  Please try again.");
 		} else {
 			firstWord = input.substring(0,newWord);
 			lastWord = input.substring(newWord);
@@ -29,14 +39,37 @@ public class Input {
 		if(newWord != -1)
 		{
 			validInput = false;
+			System.out.println("You input more than two words.  Please try again.");
+		}
+		
+		if(validInput)
+		{
+			if(firstWord.contentEquals(lastWord))
+			{
+				validInput = false;
+				System.out.println("Do we really want to calculate a ladder between the same word?");
+			}
+		
+			boolean validFirstWord = dict.wordExists(firstWord);
+			boolean validLastWord = dict.wordExists(lastWord);
+			if(!validFirstWord && !validLastWord)
+			{
+				validInput = false;
+				System.out.println("Neither " + firstWord + " nor " + lastWord + 
+						" are valid words.  Please try again.");
+			} else if(!validFirstWord) {
+				validInput = false;
+				System.out.println(firstWord + " is not a valid word.  Please try again.");
+			} else if(!validLastWord) {
+				validInput = false;
+				System.out.println(lastWord + " is not a valid word.  Please try again.");
+			}
 		}
 	}
-
+	
 /**
- * A collection of getters for the Input values.
- * Setters are not implemented as the constructor
- * should be the only one changing the attribute
- * values.
+ * A group of getters for Input values.  We do not want anything
+ * else changing the values so no setters have been included.
  */
 	public String getFirstWord()
 	{
@@ -52,5 +85,4 @@ public class Input {
 	{
 		return validInput;
 	}
-	
 }
