@@ -13,20 +13,16 @@ public class Dictionary{
 	boolean fin = false;
 	
 	//Class constructor for dictionary, reads input words from a file and stores them in an arraylist
-	public Dictionary(java.io.File f){  //
-	//public Dictionary(String args[]){
+	public Dictionary(java.io.File f){  
 		try 
 		{
-			FileReader freader = new FileReader(f);
-			BufferedReader reader = new BufferedReader(freader);
-			for (String s = reader.readLine(); s != null; s = reader.readLine())
-			{
-				if(isLetter(s.charAt(0)))
-				{
-					words.add(s.substring(0,5));
-				}
+		FileReader freader = new FileReader(f);
+		BufferedReader reader = new BufferedReader(freader);
+		for (String s = reader.readLine(); s != null; s = reader.readLine()){
+			if(isLetter(s.charAt(0))){
+				words.add(s.substring(0,5));
 			}
-			reader.close();
+	}
 		}
 		catch (FileNotFoundException e) 
 		{
@@ -39,6 +35,7 @@ public class Dictionary{
 			e.printStackTrace();
 			System.exit(-1);
 		}
+		
 	}
 	
 	//checks if a character is a letter of the alphabet
@@ -133,4 +130,9 @@ public class Dictionary{
 	
 	
 }
+
+
+
+
+
 

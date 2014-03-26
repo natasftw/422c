@@ -12,9 +12,10 @@ class A4Driver {
 	static ArrayList<String> explored = new ArrayList<String>();
 	static boolean flag = false;
 	static Dictionary dict;
+	static StopWatch timer;
 	
 	public static void main(String args[]){
-		java.io.File wordfile = new java.io.File("src/assignment4/A4-words.txt");
+		java.io.File wordfile = new java.io.File(args[1]);
 		dict = new Dictionary(wordfile); //create dictionary object
 		
 		try 
@@ -26,10 +27,13 @@ class A4Driver {
 				Input newInput = new Input(s, dict);
 				if(newInput.getValidInput())
 				{
+					timer = new StopWatch();
+					timer.start();
 					String word1 = newInput.getFirstWord();
 					String word2 = newInput.getLastWord();
 					tempList.clear();
 					solutionList.clear();
+					explored.clear();
 
 					if(makeLadder(word1, word2, -1) == true)
 					{ 
@@ -41,10 +45,10 @@ class A4Driver {
 						System.out.println("No ladder exists between " + word1 + 
 								" and " + word2 + ".");
 					}
+					System.out.println("The ladder took " + timer.getElapsedTime() + " ms");
 				}
-				reader.close();
+				System.out.println(" ");	//print out a blank line for cleaner output
 			}
-			System.out.println(" ");	//print out a blank line for cleaner output
 		}
 		catch (FileNotFoundException e) 
 		{
@@ -109,3 +113,4 @@ class A4Driver {
 		return word;
 	}
 }
+
