@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 viper money
 viper money
 viper money
@@ -16,3 +17,32 @@ apple zebr
 applezebra
 
 apple orange zebra
+=======
+viper money
+viper money
+viper money
+viper money
+coney cones
+zebra stars
+melon likes
+hands stars
+snake money
+apple zebra
+appl zebra
+  apple zebra
+apple     zebra
+apple zebra     
+apple zebr
+applezebra
+apple orange zebra 
+app1e zebra
+apple 2ebra
+5iper money
+*ater balls
+*ater ball
+apple apple
+apple appll
+appll apple
+appll appll
+appl appl
+>>>>>>> cbb92bd94dff712733f64c438d3793cf1ca1f015
